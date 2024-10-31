@@ -2,7 +2,7 @@
 
 
 
-## Configuração do ambiente poentry
+## Configuração do ambiente poetry
 ```
 poetry shell
 ```

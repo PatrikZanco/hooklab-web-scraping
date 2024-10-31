@@ -6,41 +6,41 @@ import csv
 url = "https://www.reddit.com/r/programming/"
 
 
-# Realiza a requisição
+
 response = requests.get(url)
 
-# Verifica se a conexão foi bem-sucedida
+
 if response.status_code == 200:
     print(f"Conexão feita com sucesso. Status: {response.status_code}")
     
-    # Parse do conteúdo HTML
+    
     html_page = response.content
     soup = BeautifulSoup(html_page, "html.parser")
 
-    # Coleta as três primeiras postagens
-    posts = soup.findAll("a", class_="absolute inset-0", limit=3)
+    
+    posts = soup.findAll("a", class_="absolute inset-0", limit=3) #buscar os 3 primeiros posts
     
 
-    # Lista para armazenar os dados
+    
     data = []
 
     for post in posts:
-        # Título da postagem
-        title_tag = post.find("faceplate-screen-reader-content")  # Ajuste conforme necessário
+        
+        title_tag = post.find("faceplate-screen-reader-content")  
         title = title_tag.get_text() if title_tag else "Título não encontrado"
 
-        # Link da postagem
+        
         link = post['href'] if 'href' in post.attrs else "Link não encontrado"
         full_link = "https://www.reddit.com" + link
 
-        # Upvotes (ajuste conforme a estrutura HTML)
-        upvotes_tag = post.find_previous_sibling("div", class_="upvote-count")  # Ajuste conforme necessário
+        
+        upvotes_tag = post.find_previous_sibling("div", class_="upvote-count")  
         upvotes = upvotes_tag.get_text() if upvotes_tag else "N/A"
 
-        # Adiciona os dados à lista
+        
         data.append([title, upvotes, full_link])
 
-    # Escreve os dados em um arquivo CSV
+    # Escreve os dados em um arquivo CSV e salva no diretório
     with open("questao1/reddit_posts.csv", "w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Título", "Upvotes", "Link"])
